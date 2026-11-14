@@ -33,5 +33,13 @@
             android:maxLines="1"
             android:padding="6dp"
             android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnXoaAnh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Xoá ảnh"
+            android:textAllCaps="false" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

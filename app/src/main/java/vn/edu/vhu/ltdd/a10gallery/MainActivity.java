@@ -25,9 +25,18 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_VI_TRI = "extra_vi_tri";
 
     /** Danh sách ảnh dùng chung cho cả hai màn hình. */
-    public static final int[] ANH = {
-            R.drawable.p1, R.drawable.p2, R.drawable.p3, R.drawable.p4,
-            R.drawable.p5, R.drawable.p6, R.drawable.p7, R.drawable.p8,
+    public static final List<Integer> ANH = new ArrayList<>(
+            java.util.Arrays.asList(
+                    R.drawable.p1,
+                    R.drawable.p2,
+                    R.drawable.p3,
+                    R.drawable.p4,
+                    R.drawable.p5,
+                    R.drawable.p6,
+                    R.drawable.p7,
+                    R.drawable.p8
+            )
+    );
 //            R.drawable.p9, R.drawable.p10, R.drawable.p11, R.drawable.p12,
 //
 //            //Tăng ảnh lần 1
@@ -39,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //            R.drawable.p1, R.drawable.p2, R.drawable.p3, R.drawable.p4,
 //            R.drawable.p5, R.drawable.p6, R.drawable.p7, R.drawable.p8,
 //            R.drawable.p9, R.drawable.p10, R.drawable.p11, R.drawable.p12,
-    };
-
-    private final List<String> chuThich = new ArrayList<>();
+private final List<String> chuThich = new ArrayList<>();
     private AnhAdapter adapter;
     private boolean dangDungLuoiSoLe = false;
 
@@ -56,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        for (int i = 0; i < ANH.length; i++) {
+        for (int i = 0; i < ANH.size(); i++) {
             chuThich.add(getString(R.string.anh_so, i + 1));
         }
 
@@ -76,7 +83,17 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, ViewerActivity.class);
             i.putExtra(EXTRA_VI_TRI, viTri);
             startActivity(i);
-        });
+        },
+                // Sự kiện xoá ảnh
+                viTri -> {
+            Log.d(TAG, "Xoá ảnh tại vị trí " + viTri);
+
+            ANH.remove(viTri);
+            chuThich.remove(viTri);
+
+            adapter.notifyItemRemoved(viTri);
+            adapter.notifyItemRangeChanged(viTri, ANH.size() - viTri);
+                });
         rv.setAdapter(adapter);
 
         Button btnDoiCot = findViewById(R.id.btnDoiCot);

@@ -52,6 +52,6 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     private void capNhatChiSo(int viTri) {
-        tvChiSo.setText(getString(R.string.chi_so, viTri + 1, MainActivity.ANH.length));
+        tvChiSo.setText(getString(R.string.chi_so, viTri + 1, MainActivity.ANH.size()));
     }
 }

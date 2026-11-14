@@ -1,3 +1,4 @@
+
 package vn.edu.vhu.ltdd.a10gallery;
 
 import android.view.LayoutInflater;
@@ -8,7 +9,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/** Adapter cho ViewPager2 — mỗi "trang" là một ảnh chiếm trọn màn hình. */
+import java.util.List;
+
+/**
+ * Adapter cho ViewPager2.
+ * Mỗi trang hiển thị một ảnh lớn.
+ */
 public class AnhPagerAdapter extends RecyclerView.Adapter<AnhPagerAdapter.PageViewHolder> {
 
     static class PageViewHolder extends RecyclerView.ViewHolder {
@@ -20,27 +26,32 @@ public class AnhPagerAdapter extends RecyclerView.Adapter<AnhPagerAdapter.PageVi
         }
     }
 
-    private final int[] anh;
+    private final List<Integer> anh;
 
-    public AnhPagerAdapter(int[] anh) {
+    public AnhPagerAdapter(List<Integer> anh) {
         this.anh = anh;
     }
 
     @NonNull
     @Override
-    public PageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PageViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.page_anh, parent, false);
+
         return new PageViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PageViewHolder holder, int position) {
-        holder.img.setImageResource(anh[position]);
+    public void onBindViewHolder(
+            @NonNull PageViewHolder holder, int position) {
+
+        holder.img.setImageResource(anh.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return anh.length;
+        return anh.size();
     }
 }

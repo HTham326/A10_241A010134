@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,25 +29,33 @@ public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
         void onAnhClick(int viTri);
     }
 
+    public interface OnAnhDeleteListener {
+        void onAnhDelete(int viTri);
+    }
+
     static class AnhViewHolder extends RecyclerView.ViewHolder {
         final ImageView imgAnh;
         final TextView tvChuThich;
+        final Button btnXoaAnh;
 
         AnhViewHolder(@NonNull View itemView) {
             super(itemView);
             imgAnh = itemView.findViewById(R.id.imgAnh);
             tvChuThich = itemView.findViewById(R.id.tvChuThich);
+            btnXoaAnh = itemView.findViewById(R.id.btnXoaAnh);
         }
     }
 
-    private final int[] anh;
+    private final List<Integer> anh;
     private final List<String> chuThich;
     private final OnAnhClickListener listener;
+    private final OnAnhDeleteListener deleteListener;
 
-    public AnhAdapter(int[] anh, List<String> chuThich, OnAnhClickListener listener) {
+    public AnhAdapter(List<Integer> anh, List<String> chuThich, OnAnhClickListener listener, OnAnhDeleteListener deleteListener) {
         this.anh = anh;
         this.chuThich = chuThich;
         this.listener = listener;
+        this.deleteListener = deleteListener;
     }
 
     /** Được gọi khi cần MỘT ô mới. Số lần gọi chỉ bằng số ô nhìn thấy, không phải số ảnh. */
@@ -70,7 +79,7 @@ public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
 //                        + System.identityHashCode(holder)
 //                        + " - Vị trí: " + position);
 
-        holder.imgAnh.setImageResource(anh[position]);
+        holder.imgAnh.setImageResource(anh.get(position));
         holder.tvChuThich.setText(chuThich.get(position));
 
         // Dùng getBindingAdapterPosition(), KHÔNG dùng biến position,
@@ -79,10 +88,18 @@ public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
             int p = holder.getBindingAdapterPosition();
             if (p != RecyclerView.NO_POSITION) listener.onAnhClick(p);
         });
+
+        holder.btnXoaAnh.setOnClickListener(v -> {
+           int viTri = holder.getBindingAdapterPosition();
+
+           if(viTri != RecyclerView.NO_POSITION) {
+               deleteListener.onAnhDelete(viTri);
+           }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return anh.length;
+        return anh.size();
     }
 }
