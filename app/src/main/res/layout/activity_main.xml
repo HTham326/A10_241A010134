@@ -28,6 +28,14 @@
         android:layout_marginTop="8dp"
         android:text="@string/doi_cot" />
 
+    <Button
+        android:id="@+id/btnCheDoSoLe"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Bật / tắt lưới so le" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAnh"
         android:layout_width="match_parent"

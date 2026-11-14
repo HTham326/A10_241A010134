@@ -3,6 +3,7 @@ package vn.edu.vhu.ltdd.a10gallery;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,13 +13,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    // TODO: thay 2201234567 bằng MSSV của bạn
     private static final String TAG = "A10_241A010134";
 
     public static final String EXTRA_VI_TRI = "extra_vi_tri";
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final List<String> chuThich = new ArrayList<>();
     private AnhAdapter adapter;
+    private boolean dangDungLuoiSoLe = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,33 @@ public class MainActivity extends AppCompatActivity {
         });
         rv.setAdapter(adapter);
 
-        findViewById(R.id.btnDoiCot).setOnClickListener(v -> doiSoCot(rv));
+        Button btnDoiCot = findViewById(R.id.btnDoiCot);
+        Button btnCheDoSoLe = findViewById(R.id.btnCheDoSoLe);
+
+        btnDoiCot.setOnClickListener(v -> doiSoCot(rv));
+        btnCheDoSoLe.setOnClickListener(v -> {
+            if(!dangDungLuoiSoLe) {
+
+                // Bật chế độ lưới so le 2 cột
+                StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+                rv.setLayoutManager(lm);
+
+                dangDungLuoiSoLe = true;
+                btnDoiCot.setEnabled(false);
+
+                Toast.makeText(this, "Đã bật chế độ lưới so le 2 cột", Toast.LENGTH_SHORT).show();
+            } else {
+
+                // Quay lại chế độ lưới thông thường 3 cột
+                rv.setLayoutManager(new GridLayoutManager(this, 3));
+
+                dangDungLuoiSoLe = false;
+                btnDoiCot.setEnabled(true);
+
+                Toast.makeText(this, "Đã quay lại lưới thông thường", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /** Đổi qua lại giữa 2, 3 và 4 cột để thấy LayoutManager làm việc gì. */
